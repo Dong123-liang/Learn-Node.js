@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>二级联动下拉列表</title>
+  </head>
+  <style>
+    select {
+      width: 100px;
+      height: 20px;
+      outline: none;
+      text-align: center;
+      background-color: rgb(192, 245, 227);
+      border-radius: 4px;
+    }
+    option {
+      height: 100px;
+      display: inline-block;
+      background-color: rgb(134, 212, 223);
+    }
+  </style>
+  <body>
+    <div style="margin: 0 auto; height: 50px; width: 200px">
+      <span for="county">选择房屋所在的区县：</span>
+      <select id="county" name="county" onchange="loadData()">
+        <option value="">请选择</option>
+        <option value="清河区">清河区</option>
+        <option value="青浦区">青浦区</option>
+        <option value="淮阴区">淮阴区</option>
+        <option value="开发区">开发区</option>
+      </select>
+    </div>
+    <table
+      id="data-table"
+      border="1"
+      width="600px"
+      height="80px"
+      align="center"
+      cellpadding="20"
+      cellspacing="20"
+      style="border-collapse: collapse; margin-top: 100px"
+    >
+      <tr>
+        <th>房屋名称</th>
+        <th>所在区县</th>
+        <th>房型</th>
+        <th>楼层</th>
+        <th>面积</th>
+        <th>价格</th>
+      </tr>
+    </table>
+
+    <script>
+      function loadData() {
+          var county = document.getElementById("county").value;
+          var xhr = new XMLHttpRequest();
+          //在此插入
+          xhr.open("GET", "http://127.0.0.1:3000/getData?county=" + encodeURI(county), true);
+          xhr.send();
+          xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+          var data = JSON.parse(xhr.responseText);
+          console.log(data)
+          var table = document.getElementById("data-table");
+          table.innerHTML = "<tr><th>房屋名称</th><th>所在区县</th><th>房型</th><th>楼层</th><th>面积</th><th>价格</th></tr>";
+          for (var i = 0; i < data.length; i++) {
+              var row = table.insertRow();
+              var name = row.insertCell();
+              var address = row.insertCell();
+              var house = row.insertCell();
+              var floor = row.insertCell();
+              var area = row.insertCell();
+              var preice = row.insertCell();
+              name.innerHTML = data[i].name;
+              address.innerHTML = data[i].address
+              house.innerHTML = data[i].house;
+              floor.innerHTML = data[i].floor;
+              area.innerHTML = data[i].area;
+              preice.innerHTML = data[i].preice;
+          }
+          }
+      };
+
+      }
+    </script>
+  </body>
+</html>

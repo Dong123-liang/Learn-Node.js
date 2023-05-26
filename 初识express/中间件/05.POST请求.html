@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<style>
+	/*去掉列表前面的小点*/
+li{
+	list-style: none;
+}
+	.w {
+    width: 1200px;
+    margin: auto;
+}
+
+.header {
+    height: 82px;
+    border-bottom: 2px solid #b1191a;
+}
+
+.logo {
+    padding-top: 15px;
+}
+
+.registerarea {
+    height: 200px;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+}
+
+.registerarea h3 {
+    height: 40px;
+    border-bottom: 1px solid #ccc;
+    background-color: #ececec;
+    padding: 0 10px;
+    font-weight: 400;
+    line-height: 40px;
+    font-size: 18px;
+}
+
+.registerarea h3 em {
+    float: right;
+    font-size: 14px;
+}
+
+.registerarea a {
+    color: #c81623;
+}
+
+.reg_form {
+    width: 600px;
+    height: 400px;
+    margin: 40px auto 0;
+}
+
+.reg_form li {
+    margin-bottom: 15px;
+}
+
+.reg_form label {
+    display: inline-block;
+    width: 100px;
+    height: 36px;
+    line-height: 36px;
+    text-align: right;
+}
+
+.inp {
+    width: 238px;
+    height: 34px;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+}
+
+</style>
+<body>
+	<div class="w">
+		<div class="registerarea">
+				<h3>
+						注册新用户
+						<em>
+			我有账号，去<a href="#">登陆</a>
+		</em>
+				</h3>
+				<div class="reg_form">
+								
+						<form method="post"   action="http://127.0.0.1:8000/use"  id="form" >
+								<ul>
+										<li>
+												<label for="tel" name="username">用户名:</label>
+												<input type="text" class="inp" id="tel" name="Mobile phone">
+                                                <span id="info"></span>
+										</li>
+								</ul>
+                                <button>登录</button>
+						</form>
+				</div>
+		</div>
+</div>
+</body>
+<script>
+	window.onload =function(){
+		const registerName = document.getElementById('tel');
+        const info  =document.querySelector('#info')
+        registerName.addEventListener("blur", function(){
+            //1. 创建对象
+            info.innerHTML = ''
+            let name = ''
+            const xhr = new XMLHttpRequest();
+            //2. 初始化 设置类型与 URL
+            xhr.open('POST','http://127.0.0.1:8000/use',true);
+            // xhr.setRequestHeader('content-type', 'application/json');
+            //3. 发送
+            let username = registerName.value
+            // console.log(username)
+            xhr.send(JSON.stringify({"name":1}));        
+            //4. 事件绑定
+            xhr.onreadystatechange = function(){
+                //判断
+                if(xhr.readyState === 4){
+                    if(xhr.status >= 200 && xhr.status < 300){
+                        //处理服务端返回的结果
+                        info.innerHTML = xhr.response
+                        console.log(xhr.response);
+                    }
+                }
+            }
+        });
+	}
+</script>
+</html>

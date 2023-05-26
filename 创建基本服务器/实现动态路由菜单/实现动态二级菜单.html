@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>动态二级菜单栏</title>
+</head>
+<style>
+	select{
+		width: 100px;
+		height: 20px;
+		outline: none;
+	  text-align: center;		
+		background-color: aquamarine;
+		border-radius: 4px;
+	}
+	option{
+		height: 100px;
+		display: inline-block;
+		background-color: rgb(68, 160, 152);
+	}
+</style>
+<body>
+  <label for="province">城市：</label>
+  <select id="province" name="province" onchange="provinceSelect()">
+    <option value="">请选择</option>
+    <option value="北京">北京</option>
+    <option value="上海">上海</option>
+    <option value="西安">西安</option>
+  </select>
+  <label for="city">区县：</label>
+  <select id="city" name="city">
+    <option value="">请选择</option>
+  </select>
+  
+  <script>
+    function provinceSelect() {
+      var province = document.getElementById("province").value;
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "http://127.0.0.1:3000/getCities?province=" + encodeURI(province), true);
+      xhr.send();
+      xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var cities = JSON.parse(xhr.responseText);
+        console.log(xhr.response)
+        var citySelect = document.getElementById("city");
+        citySelect.innerHTML = "<option value=''>请选择</option>";
+        for (var i = 0; i < cities.length; i++) {
+          var option = document.createElement("option");
+          option.value = cities[i];
+          option.text = cities[i];
+          citySelect.appendChild(option);
+      }
+    }
+  };
+
+}
+
+  </script>
+  
+</body>
+</html>

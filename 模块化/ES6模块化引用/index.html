@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>模块化引用</title>
+  </head>
+  <body>
+    <script  type="module">
+        //script默认不支持import导入，应手动添加添加type=module
+      //这里会产生跨域问题使用liveserver打开由于是file文件协议会造成跨域问题
+      /*         //通用的导入方式
+        import * as m1 from "../模块化引用/m1.js";
+        import * as m2 from "../模块化引用/m2.js";
+        import * as m3 from "../模块化引用/m3.js";
+        console.log(m1);
+        console.log(m2);
+        console.log(m3);
+        m3.default.fn();//直接可以再本地文件中调用m3.js文件中的变量。 */
+
+      //按需导入导出必须使用解构赋值形式
+      import { school, teach } from "./m1.js";
+      import m3 from "./m3.js";
+      import { default as m3 } from './m3.js'
+      console.log(school);
+      console.log(m3);
+      //如果多个文件之间变量重名,则可以使用 变量 as 别名，给变量赋为新的别名。例 import(school as sh);
+    </script>
+  </body>
+</html>
